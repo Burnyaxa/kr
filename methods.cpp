@@ -1,6 +1,6 @@
 #include "fileMethods.h"
 
-vector <string> getRow(){
+vector <string> getText(){
 	vector <string> text;
 	ifstream fin("text.txt");
 	string row;
@@ -30,10 +30,11 @@ vector <string> getNumbers(vector <string> text){
 
 vector<string> getData(vector <string> numbers){
 	vector<string> numberData;
-	string data, num, postfix, prefix, number, numberPrefix, numberPostfix;
+	string data, num, temp, postfix, prefix, number, numberPrefix, numberPostfix;
 	int des;
 	for (int i = 0; i < numbers.size(); i++){
-		num = numbers[i];
+		temp = numbers[i];
+		num = reverseString(temp);
 		des = num.size();
 		while (true){
 			if (!des){
@@ -42,26 +43,28 @@ vector<string> getData(vector <string> numbers){
 				break;
 			}
 			if (des == 3){
-				postfix = "hundred";
-				data += getNumPrefix(num[3]);
-				data+= postfix;
+				postfix = " hundred ";
+				data += getNumPostfix(num[2]);
+				data += postfix;
 				des--;
 				continue;
 			}
 			if (des < 3){
 				if (des == 2){
-					string sum;
-					sum = num[5] + num[4];
+					char sum[2] = { num[1], num[0] };
+					//char first = num[1];
+					//char second = num[0];
+					//sum = first + second;
 					if (stoi(sum) < 12 && stoi(sum) >= 10){
-						switch (num[5] + num[4]){
-						case '10':
-							prefix = "ten";
+						switch (stoi(sum)){
+						case 10:
+							prefix = " ten ";
 							break;
-						case '11':
-							prefix = "eleven";
+						case 11:
+							prefix = " eleven ";
 							break;
-						case '12':
-							prefix = "twelve";
+						case 12:
+							prefix = " twelve ";
 							break;
 						}
 						data += prefix;
@@ -70,27 +73,27 @@ vector<string> getData(vector <string> numbers){
 					}
 					if (stoi(sum) > 12 && stoi(sum) < 20){
 						numberPostfix = "teen";
-						switch (num[5] + num[4]){
+						switch (num[1] + num[0]){
 						case '13':
-							numberPrefix = "thirt";
+							numberPrefix = " thirt ";
 							break;
 						case '14':
-							numberPrefix = "four";
+							numberPrefix = " four ";
 							break;
 						case '15':
-							numberPrefix = "fif";
+							numberPrefix = " fif ";
 							break;
 						case '16':
-							numberPrefix = "six";
+							numberPrefix = " six ";
 							break;
 						case '17':
-							numberPrefix = "seven";
+							numberPrefix = " seven ";
 							break;
 						case '18':
-							numberPrefix = "eight";
+							numberPrefix = " eight ";
 							break;
 						case '19':
-							numberPrefix = "nine";
+							numberPrefix = " nine ";
 							break;
 						}
 						data += numberPrefix;
@@ -99,35 +102,34 @@ vector<string> getData(vector <string> numbers){
 						continue;
 					}
 					if (stoi(sum) >= 20){
-						data += getNumPrefix(num[5]);
-						data += getNumPostfix(num[4]);
+						data += getNumPrefix(num[1]);
+						data += getNumPostfix(num[0]);
 						des -= 2;
 						continue;
 					}
 				}
 				if (des == 1){
 					postfix = " thousand";
-					data += getNumPostfix(num[4]);
+					data += getNumPostfix(num[0]);
 					data +=postfix;
 					des--;
 					continue;
 				}
 			}
 			if (des >  3){
-				postfix = " thousand";
+				postfix = " thousand ";
 				if (des == 5){
-					string sum;
-					sum = num[5] + num[4];
+					char sum[2] = { num[4], num[3] };
 					if (stoi(sum) < 12 && stoi(sum) >= 10){
-						switch (num[5] + num[4]){
+						switch (num[4] + num[3]){
 						case '10':
-							prefix = "ten";
+							prefix = "ten ";
 							break;
 						case '11':
-							prefix = "eleven";
+							prefix = "eleven ";
 							break;
 						case '12':
-							prefix = "twelve";
+							prefix = "twelve ";
 							break;
 						}
 						data += prefix;
@@ -136,8 +138,8 @@ vector<string> getData(vector <string> numbers){
 						continue;
 					}
 					if (stoi(sum) > 12 && stoi(sum) < 20){
-						numberPostfix = "teen";
-						switch (num[5] + num[4]){
+						numberPostfix = "teen ";
+						switch (num[4] + num[3]){
 						case '13':
 							numberPrefix = "thirt";
 							break;
@@ -167,16 +169,16 @@ vector<string> getData(vector <string> numbers){
 						continue;
 					}
 					if (stoi(sum) >= 20){
-						data += getNumPrefix(num[5]);
-						data += getNumPostfix(num[4]);
+						data += getNumPrefix(num[4]);
+						data += getNumPostfix(num[3]);
 						data += postfix;
 						des -= 2;
 						continue;
 					}
 				}
 				if (des == 4){
-					postfix = " thousand";
-					data += getNumPostfix(num[4]);
+					postfix = " thousand ";
+					data += getNumPostfix(num[3]);
 					data += postfix;
 					des--;
 					continue;
@@ -198,70 +200,79 @@ void createFiles(vector <string> data, vector<string> numbers){
 }
 
 string getNumPostfix(char N){
-	string postfix;
+	string numPostfix;
 	switch (N){
 	case '0':
-		postfix = "";
+		numPostfix = "";
 		break;
 	case '1':
-		postfix = "one";
+		numPostfix = "one ";
 		break;
 	case '2':
-		postfix = "two";
+		numPostfix = "two ";
 		break;
 	case '3':
-		postfix = "three";
+		numPostfix = "three ";
 		break;
 	case '4':
-		postfix = "four";
+		numPostfix = "four ";
 		break;
 	case '5':
-		postfix = "five";
+		numPostfix = "five ";
 		break;
 	case '6':
-		postfix = "six";
+		numPostfix = "six ";
 		break;
 	case '7':
-		postfix = "seven";
+		numPostfix = "seven ";
 		break;
 	case '8':
-		postfix = "eight";
+		numPostfix = "eight ";
 		break;
 	case '9':
-		postfix = "nine";
+		numPostfix = "nine ";
 		break;
 	}
-	return postfix;
+	return numPostfix;
 }
 
 string getNumPrefix(char N){
 	string prefix;
 	switch (N){
+
 	case '2':
-		prefix = "twenty";
+		prefix = "twenty ";
 		break;
 	case '3':
-		prefix = "thirty";
+		prefix = "thirty ";
 		break;
 	case '4':
-		prefix = "forty";
+		prefix = "forty ";
 		break;
 	case '5':
-		prefix = "fifty";
+		prefix = "fifty ";
 		break;
 	case '6':
-		prefix = "sixty";
+		prefix = "sixty ";
 		break;
 	case '7':
-		prefix = "seventy";
+		prefix = "seventy ";
 		break;
 	case '8':
-		prefix = "eighty";
+		prefix = "eighty ";
 		break;
 	case '9':
-		prefix = "ninety";
+		prefix = "ninety ";
 		break;
 	}
 	return prefix;
+}
+
+string reverseString(string num){
+	string temp;
+	for (int i = 0; i < num.size(); i++){
+		temp += num[num.size() - i - 1];
+	}
+	return temp;
 }
 
