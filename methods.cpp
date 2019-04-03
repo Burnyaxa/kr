@@ -55,12 +55,12 @@ vector<string> getData(vector <string> numbers){
 			}
 			if (des < 3){
 				if (des == 2){
-					if (num[1] == '0' && num[0] == '0'){
-						des -= 2;
+					if (num[1] == '0'){
+						des --;
 						continue;
 					}
 					char sum[2] = { num[1], num[0] };
-					if (stoi(sum) < 12 && stoi(sum) >= 10){
+					if (stoi(sum) <= 12 && stoi(sum) >= 10){
 						switch (stoi(sum)){
 						case 10:
 							prefix = " ten ";
@@ -115,16 +115,26 @@ vector<string> getData(vector <string> numbers){
 				}
 				if (des == 1){
 					data += getNumPostfix(num[0]);
-					data +=postfix;
 					des--;
 					continue;
 				}
 			}
 			if (des >  3){
+				if (des == 6){
+					if (num[5] == '0'){
+						des--;
+						continue;
+					}
+					postfix = " hundred ";
+					data += getNumPostfix(num[5]);
+					data += postfix;
+					des--;
+					continue;
+				}
 				postfix = " thousand ";
 				if (des == 5){
 					char sum[2] = { num[4], num[3] };
-					if (stoi(sum) < 12 && stoi(sum) >= 10){
+					if (stoi(sum) <= 12 && stoi(sum) >= 10){
 						switch (stoi(sum)){
 						case 10:
 							prefix = "ten ";
@@ -143,26 +153,26 @@ vector<string> getData(vector <string> numbers){
 					}
 					if (stoi(sum) > 12 && stoi(sum) < 20){
 						numberPostfix = "teen ";
-						switch (num[4] + num[3]){
-						case '13':
+						switch (stoi(sum)){
+						case 13:
 							numberPrefix = "thirt";
 							break;
-						case '14':
+						case 14:
 							numberPrefix = "four";
 							break;
-						case '15':
+						case 15:
 							numberPrefix = "fif";
 							break;
-						case '16':
+						case 16:
 							numberPrefix = "six";
 							break;
-						case '17':
+						case 17:
 							numberPrefix = "seven";
 							break;
-						case '18':
+						case 18:
 							numberPrefix = "eight";
 							break;
-						case '19':
+						case 19:
 							numberPrefix = "nine";
 							break;
 						}
@@ -179,6 +189,9 @@ vector<string> getData(vector <string> numbers){
 						des -= 2;
 						continue;
 					}
+					data += postfix;
+					des -= 2;
+					continue;
 				}
 				if (des == 4){
 					postfix = " thousand ";
