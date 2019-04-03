@@ -43,6 +43,10 @@ vector<string> getData(vector <string> numbers){
 				break;
 			}
 			if (des == 3){
+				if (num[2] == '0'){
+					des--;
+					continue;
+				}
 				postfix = " hundred ";
 				data += getNumPostfix(num[2]);
 				data += postfix;
@@ -51,10 +55,11 @@ vector<string> getData(vector <string> numbers){
 			}
 			if (des < 3){
 				if (des == 2){
+					if (num[1] == '0' && num[0] == '0'){
+						des -= 2;
+						continue;
+					}
 					char sum[2] = { num[1], num[0] };
-					//char first = num[1];
-					//char second = num[0];
-					//sum = first + second;
 					if (stoi(sum) < 12 && stoi(sum) >= 10){
 						switch (stoi(sum)){
 						case 10:
@@ -109,7 +114,6 @@ vector<string> getData(vector <string> numbers){
 					}
 				}
 				if (des == 1){
-					postfix = " thousand";
 					data += getNumPostfix(num[0]);
 					data +=postfix;
 					des--;
@@ -121,14 +125,14 @@ vector<string> getData(vector <string> numbers){
 				if (des == 5){
 					char sum[2] = { num[4], num[3] };
 					if (stoi(sum) < 12 && stoi(sum) >= 10){
-						switch (num[4] + num[3]){
-						case '10':
+						switch (stoi(sum)){
+						case 10:
 							prefix = "ten ";
 							break;
-						case '11':
+						case 11:
 							prefix = "eleven ";
 							break;
-						case '12':
+						case 12:
 							prefix = "twelve ";
 							break;
 						}
